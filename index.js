@@ -9,4 +9,4 @@ app.set('view engine', 'html');
 
 console.log(`===============================================`);
 console.log(`Server Start PORT : ${port}`);
-app.listen(process.env.PORT);
+app.listen(process.env.PORT || 3000);
