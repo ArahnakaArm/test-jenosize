@@ -4,7 +4,8 @@ module.exports = {
             name: 'app',
             script: 'index.js',
             env: {
-                PORT: 3000,
+                // eslint-disable-next-line prettier/prettier
+                "PORT": 3000,
                 NODE_ENV: 'development',
                 service: {
                     db: {
