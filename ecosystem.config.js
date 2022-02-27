@@ -5,7 +5,6 @@ module.exports = {
             script: 'index.js',
             env: {
                 // eslint-disable-next-line prettier/prettier
-                "PORT": 3000,
                 NODE_ENV: 'development',
                 service: {
                     db: {
@@ -23,7 +22,6 @@ module.exports = {
                 },
             },
             env_production: {
-                PORT: 80,
                 NODE_ENV: 'production',
                 service: {
                     db: {
