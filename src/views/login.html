@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Firebase Server Auth</title>
+    <script src="https://www.gstatic.com/firebasejs/7.14.1/firebase-app.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/7.14.1/firebase-auth.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js" defer></script>
+</head>
+
+<body>
+    <main>
+        <section>
+            <form id="login">
+                <label>Login</label>
+                <input type="text" name="login" />
+                <label>Password</label>
+                <input type="password" name="password" />
+                <button>Log in</button>
+            </form>
+            <form id="loginwithgoogle">
+                <button>Google</button>
+            </form>
+            <form id="loginwithfacebook">
+                <button>Facebook</button>
+            </form>
+            <div>
+                <p id="email">Email : </p>
+                <p id="name">Name : </p>
+
+            </div>
+        </section>
+        <script src="/__/firebase/6.2.4/firebase-app.js"></script>
+        <script src="/__/firebase/6.2.4/firebase-auth.js"></script>
+
+        <!-- TODO: Add SDKs for Firebase products that you want to use
+            https://firebase.google.com/docs/web/setup#reserved-urls -->
+
+        <!-- Initialize Firebase -->
+        <script src="/__/firebase/init.js"></script>
+        <script>
+
+            window.addEventListener("DOMContentLoaded", () => {
+
+                const firebaseConfig = {
+                    apiKey: "AIzaSyC4Bi7Tafnfox6un2W6l2eh24ACV4P946I",
+                    authDomain: "jenosize-auth.firebaseapp.com",
+                    projectId: "jenosize-auth",
+                    storageBucket: "jenosize-auth.appspot.com",
+                    messagingSenderId: "555711556863",
+                    appId: "1:555711556863:web:b7eecdf79bb719cb9c30ca",
+                    measurementId: "G-31QXYYENYY"
+                };
+
+                firebase.initializeApp(firebaseConfig);
+
+
+
+
+                firebase.auth().setPersistence(firebase.auth.Auth.Persistence.NONE);
+
+                const auth = firebase.auth();
+
+
+
+                document
+                    .getElementById("login")
+                    .addEventListener("submit", (event) => {
+                        event.preventDefault();
+                        const login = event.target.login.value;
+                        const password = event.target.password.value;
+
+                        firebase
+                            .auth()
+                            .signInWithEmailAndPassword(login, password)
+                            .then(({ user }) => {
+                                return user.getIdToken().then((idToken) => {
+                                    console.log(user.uid)
+                                    /*    return fetch("/loginWithEmail", {
+                                           method: "POST",
+                                           headers: {
+                                               Accept: "application/json",
+                                               "Content-Type": "application/json",
+                                           },
+                                           body: JSON.stringify({ idToken }),
+                                       }); */
+                                    fetch("/login", {
+                                        method: "POST",
+                                        headers: {
+                                            "Connection": "keep-alive",
+                                            "Content-Type": "application/json",
+                                        },
+                                        body: JSON.stringify({ uid: user.uid }),
+                                    }).then(function (response) {
+                                        return response.json();
+                                    }).then(function (data) {
+                                        console.log(data)
+                                        document
+                                            .getElementById("email").innerHTML = "Email : " + data.email
+                                            document
+                                            .getElementById("name").innerHTML = data.displayName ?  "Name : " + data.displayName :  "Name : "
+                                        console.log(data);
+                                    }).catch(function () {
+                                        console.log("error");
+                                    });
+                                });
+                            })
+                            .then(() => {
+                                return firebase.auth().signOut();
+                            })
+                            .then(() => {
+                                /*    window.location.assign("/profile"); */
+                            });
+                        return false;
+                    });
+
+                document
+                    .getElementById("loginwithgoogle")
+                    .addEventListener("submit", (event) => {
+                        event.preventDefault();
+                        var provider = new firebase.auth.GoogleAuthProvider();
+                        firebase.auth()
+                            .signInWithPopup(provider)
+                            .then((result) => {
+                                /** @type {firebase.auth.OAuthCredential} */
+                                var credential = result.credential;
+
+                                // This gives you a Google Access Token. You can use it to access the Google API.
+                                var token = credential.accessToken;
+                                // The signed-in user info.
+                                var user = result.user;
+
+                                fetch("/login", {
+                                        method: "POST",
+                                        headers: {
+                                            "Connection": "keep-alive",
+                                            "Content-Type": "application/json",
+                                        },
+                                        body: JSON.stringify({ uid: user.uid }),
+                                    }).then(function (response) {
+                                        return response.json();
+                                    }).then(function (data) {
+                                        console.log(data)
+                                        document
+                                            .getElementById("email").innerHTML = "Email : " + data.email
+                                            document
+                                            .getElementById("name").innerHTML = "Name : " + data.displayName
+                                        console.log(data);
+                                    }).catch(function () {
+                                        console.log("error");
+                                    });
+
+                                // ...
+                            }).catch((error) => {
+                                // Handle Errors here.
+                                var errorCode = error.code;
+                                var errorMessage = error.message;
+                                // The email of the user's account used.
+                                var email = error.email;
+                                // The firebase.auth.AuthCredential type that was used.
+                                var credential = error.credential;
+                                // ...
+                            });
+
+
+
+                    });
+
+                document
+                    .getElementById("loginwithfacebook")
+                    .addEventListener("submit", (event) => {
+                        event.preventDefault();
+                        var provider = new firebase.auth.FacebookAuthProvider();
+                        firebase.auth()
+                            .signInWithPopup(provider)
+                            .then((result) => {
+                                /** @type {firebase.auth.OAuthCredential} */
+                                var credential = result.credential;
+
+                                // The signed-in user info.
+                                var user = result.user;
+
+                                // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+                                var accessToken = credential.accessToken;
+
+                                console.log("------------------")
+                                console.log("------------------")
+                                console.log(result.user.uid)
+                                console.log(accessToken)
+
+                                fetch("/login", {
+                                        method: "POST",
+                                        headers: {
+                                            "Connection": "keep-alive",
+                                            "Content-Type": "application/json",
+                                        },
+                                        body: JSON.stringify({ uid:result.user.uid}),
+                                    }).then(function (response) {
+                                        return response.json();
+                                    }).then(function (data) {
+                                        console.log(data)
+                                        document
+                                            .getElementById("email").innerHTML = "Email : " + data.email
+
+                                            document
+                                            .getElementById("name").innerHTML = "Name : " + data.displayName
+
+                                        console.log(data);
+                                    }).catch(function () {
+                                        console.log("error");
+                                    });
+
+                                // ...
+                            })
+                            .catch((error) => {
+                                // Handle Errors here.
+                                var errorCode = error.code;
+                                var errorMessage = error.message;
+                                // The email of the user's account used.
+                                var email = error.email;
+                                // The firebase.auth.AuthCredential type that was used.
+                                var credential = error.credential;
+
+
+                                console.log("------------------")
+                                console.log(error)
+
+                                // ...
+                            });
+
+
+                    });
+            });
+
+
+
+        </script>
+    </main>
+</body>
+
+</html>

@@ -1,0 +1,29 @@
+{
+  "apps": [
+    {
+      "name": "futurestudio-homepage",
+      "script": "index.js",
+      "watch": [
+        "src"
+      ],
+      "env": {
+        "ip": "localhost",
+        "port": "3000",
+        "service": {
+          "db": {
+            "default": {
+              "ip": "cluster0.h2qmi.mongodb.net",
+              "path": "test-db",
+              "user": "2api3r",
+              "pass": "a0899752124"
+            }
+          },
+          "googleApi" : {
+            "placeUrl" : "https://maps.googleapis.com/maps/api/place/nearbysearch/json",
+            "key" : "AIzaSyDR5SFb0ksdgYZmB5lac8PhWvtLIFy3VNk"
+          }
+        }
+      }
+    }
+  ]
+}
