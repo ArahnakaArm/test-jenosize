@@ -10,4 +10,6 @@ app.set('view engine', 'html');
 
 console.log(`===============================================`);
 
-app.listen(PORT, () => console.log(`Listening on ${PORT}`));
+app.listen(process.env.PORT || 3000, '0.0.0.0', () => {
+    console.log('Server is running.');
+});
