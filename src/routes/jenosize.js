@@ -5,7 +5,7 @@ const validate = require('../middleware/validate');
 
 router.post('/findRestaurant', validate.findRestaurantValidate, jenosizeCtrl.findRestaurant);
 router.post('/twentyfourGame', validate.twentyfourGamaValidate, jenosizeCtrl.twentyfourGame);
-router.get('/login', jenosizeCtrl.renderLogin);
+router.get('/loginweb', jenosizeCtrl.renderLogin);
 router.post('/login', jenosizeCtrl.login);
 
 module.exports = router;
