@@ -30,9 +30,6 @@
     "start": "pm2-runtime start ecosystem.config.js --env development"
   },
   "author": "",
-  "license": "ISC",
-  "engines": {
-    "node": "5.0.0",
-    "npm": "4.6.1"
-    }
+  "license": "ISC"
+ 
 }
