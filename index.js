@@ -1,4 +1,4 @@
-const port = typeof process.env.port === 'string' ? JSON.parse(process.env.port) : process.env.port;
+const port = typeof process.env.PORT === 'string' ? JSON.parse(process.env.PORT) : process.env.PORT;
 const app = require('./src/app');
 const cors = require('cors');
 app.use(cors());
@@ -9,4 +9,4 @@ app.set('view engine', 'html');
 
 console.log(`===============================================`);
 console.log(`Server Start PORT : ${port}`);
-app.listen(parseInt(port));
+app.listen(process.env.PORT);
