@@ -13,4 +13,9 @@ module.exports = Object.freeze({
         RESULT_CODE: '50000',
         DEVELOPER_MESSAGE: 'System error',
     },
+    UNAUTHORIZED: {
+        RESULT_DESC: 'Unauthorized',
+        RESULT_CODE: '40104',
+        Result_Message: 'Unauthorized',
+    },
 });
