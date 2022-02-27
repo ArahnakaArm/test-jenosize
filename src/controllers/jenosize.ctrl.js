@@ -16,6 +16,8 @@ exports.findRestaurant = async (req, res) => {
         const response = await axios.get(
             `${placeUrl}?location=${latitude.toString()}%2C${longitude.toString()}&radius=${radius.toString()}&type=restaurant&key=${key}`,
         );
+        delete response.data.html_attributions;
+        delete response.data.next_page_token;
         return res.status(200).send(response.data);
     } catch (error) {
         const resMessage = {
